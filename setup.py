@@ -2,7 +2,8 @@ from setuptools import setup, Extension
 from Cython.Build import cythonize
 
 extensions = [
-    Extension("engine.piece", ["engine/piece.pyx"])
+    Extension("engine.piece", ["engine/piece.pyx"]),
+    Extension("engine.board", ["engine/board.pyx"])
 ]
 
 setup(
