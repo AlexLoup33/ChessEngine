@@ -7,16 +7,9 @@ cdef class Board:
     
     def __cinit__(self):
         self.squares = [0] * 64
-        
-    def saveFEN(self)->str:
-        fen = ""
-        for row in range(8):
-            for col in range(8):
-                pass
-        return fen
     
-    def loadDefaultFEN(self, fenStr:str):
-        fen = fenStr.split("/")
+    def loadFEN(self, fen_string:str):
+        fen = fen_string.split("/")
         for row in range(8):
             rowFen = fen[row]
             col = 0
@@ -73,3 +66,7 @@ cdef class Board:
                     print(f"| {piece.symbol} ", end="")
             print("|")
         print("+---+---+---+---+---+---+---+---+")
+
+
+    def get_board_state(self):
+        return self.squares

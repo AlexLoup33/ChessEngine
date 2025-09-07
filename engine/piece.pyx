@@ -21,3 +21,7 @@ cdef class Piece:
         self.long_move = long_m
         self.has_move = has_m
         self.symbol = symbol
+
+    
+    def get_name(self):
+        return self.name
