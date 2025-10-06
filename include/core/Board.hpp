@@ -6,8 +6,8 @@
 
 #include "cstddef"
 
-#include "piece.hpp"
-#include "utils/utils.hpp"
+#include "Piece.hpp"
+#include "utils/Utils.hpp"
 
 class Board{
     public:

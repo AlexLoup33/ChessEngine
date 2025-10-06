@@ -2,11 +2,11 @@
 #define __GAME_HPP__
 
 /* Core Headers */
-#include "core/board.hpp"
-#include "core/color.hpp"
+#include "core/Board.hpp"
+#include "core/Color.hpp"
 
 /* Utils Headers*/
-#include "utils/utils.hpp"
+#include "utils/Utils.hpp"
 
 #pragma once
 

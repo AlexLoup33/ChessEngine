@@ -1,4 +1,4 @@
-#include "core/piece.hpp"
+#include "core/Piece.hpp"
 
 using namespace std;
 

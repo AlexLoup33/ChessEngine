@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-#include "core/color.hpp"
+#include "core/Color.hpp"
 
 #pragma once
 
