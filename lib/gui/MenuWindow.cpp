@@ -2,7 +2,9 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+
 #include <stdexcept>
+#include <filesystem>
 
 MenuWindow::MenuWindow(WindowManager* manager_, SDL_Renderer* renderer_)
     : manager(manager_), renderer(renderer_) 
@@ -13,10 +15,11 @@ MenuWindow::MenuWindow(WindowManager* manager_, SDL_Renderer* renderer_)
     }
 
     // Charger la police
-    font = TTF_OpenFont("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 24);
-    if (!font) {
-        throw std::runtime_error("Failed to load font");
-    }
+    font = loadFontSafe({
+        "assets/fonts/Roboto-Black.ttf",
+        "/usr/share/fonts/TTF/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+    }, 24);
 
     // Définir les boutons
     int btnWidth = 300;
