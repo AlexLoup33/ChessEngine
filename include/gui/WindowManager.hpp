@@ -22,7 +22,7 @@ public:
     std::shared_ptr<Window> getCurrent() const { return current; }
 
 private:
-    std::unordered_map<std::string, std::shared_ptr<Window>> windows;  // ✅ correction ici
+    std::unordered_map<std::string, std::shared_ptr<Window>> windows;
     std::shared_ptr<Window> current;
 };
 

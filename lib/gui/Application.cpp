@@ -1,5 +1,6 @@
 #include "gui/Application.hpp"
 #include "gui/MenuWindow.hpp"
+#include "gui/PlayerGameWindow.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -23,8 +24,8 @@ Application::Application(const string& title, int width, int height){
         throw runtime_error("Failed to create SDL renderer");
 
     manager.addWindow("menu", make_shared<MenuWindow>(&manager, renderer));
-    manager.addWindow("AIgame", shared_ptr<Window>(nullptr));
-    manager.addWindow("PlayerGame", shared_ptr<Window>(nullptr));
+    manager.addWindow("PlayerGame", make_shared<PlayerGameWindow>(&manager, renderer));
+    manager.addWindow("AIGame", shared_ptr<Window>(nullptr));
 
     manager.switchTo("menu");
 }

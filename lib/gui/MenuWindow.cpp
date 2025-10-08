@@ -3,11 +3,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <stdexcept>
-#include <filesystem>
+using namespace std;; 
+
 
 MenuWindow::MenuWindow(WindowManager* manager_, SDL_Renderer* renderer_)
-    : manager(manager_), renderer(renderer_) 
+    : manager(manager_), renderer(renderer_)
 {
     // Init SDL_ttf si ce n'est pas déjà fait
     if (TTF_Init() == -1) {
@@ -70,6 +70,7 @@ void MenuWindow::render(SDL_Renderer* renderer) {
 }
 
 void MenuWindow::handleClick(int x, int y) {
+    cout << "Click at (" << x << ", " << y << ")\n";
     for (const auto& btn : buttons) {
         if (x >= btn.rect.x && x <= btn.rect.x + btn.rect.w &&
             y >= btn.rect.y && y <= btn.rect.y + btn.rect.h) 
@@ -80,6 +81,7 @@ void MenuWindow::handleClick(int x, int y) {
                 quitEvent.type = SDL_QUIT;
                 SDL_PushEvent(&quitEvent);
             } else if (btn.label == "Joueur vs Joueur") {
+                cout << "Switching to PlayerGame window" << endl;
                 manager->switchTo("PlayerGame");
             } else if (btn.label == "IA / Analyse") {
                 manager->switchTo("AIgame");
