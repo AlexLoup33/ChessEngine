@@ -16,6 +16,7 @@ class Game{
         ~Game();
 
         void newGame();
+        Board* GetBoard();
 
     private:
         Board *board;

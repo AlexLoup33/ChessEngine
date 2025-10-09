@@ -6,9 +6,11 @@
 #include "gui/Window.hpp"
 #include "gui/WindowManager.hpp"
 #include "utils/Utils.hpp"
+#include "core/Game.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <string>
 #include <stdexcept>
 #include <filesystem>
@@ -31,6 +33,7 @@ private:
     WindowManager* manager;
 
     TTF_Font* font;
+    Game* game;    
 };
 
 #endif // __PLAYERGAMEWINDOW_HPP__

@@ -23,8 +23,8 @@ class Board{
 
         /**
         * @brief Initializes the board with pieces in their starting position according
-        * the FEN notation given.
-        * @param fen a string representing the board state in FEN notation.
+        * @param the FEN notation given.
+        * @return void
         */
         void initialize(const std::string& fen);
         
@@ -33,9 +33,15 @@ class Board{
         */
         void reset();
 
+        /**
+         * @brief Getter for the piece at a specifi position
+         * @param pos
+         * @return Piece* : the value in the board at the position pos
+         */
+        Piece* getPieceAt(int pos);
+
     private:
         Piece **squares; // Array of Pieces
-
 };
 
 #endif // __BOARD_HPP__
