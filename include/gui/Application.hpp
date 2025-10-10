@@ -3,21 +3,24 @@
 
 #pragma once
 
-#include "gui/WindowManager.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <memory>
+#include <string>
 
-class Application{
-    public:
-        Application(const std::string& title, int width, int height);
-        ~Application();
+#include "gui/WindowManager.hpp"
 
-        void run();
+class Application {
+public:
+    Application(const std::string& title, int width, int height);
+    ~Application();
 
-    private:
-        SDL_Window* window;
-        SDL_Renderer* renderer;
-        bool running; 
-        WindowManager manager;
+    void run();
+
+private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    std::unique_ptr<WindowManager> windowManager;
 };
 
-#endif
+#endif // __APPLICATION_HPP__

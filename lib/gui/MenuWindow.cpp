@@ -1,90 +1,82 @@
 #include "gui/MenuWindow.hpp"
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-
-using namespace std;; 
-
+#include "gui/WindowManager.hpp"
+#include <SDL2/SDL_image.h>
+#include <iostream>
 
 MenuWindow::MenuWindow(WindowManager* manager_, SDL_Renderer* renderer_)
-    : manager(manager_), renderer(renderer_)
+    : Window(manager_), renderer(renderer_), font(nullptr)
 {
-    // Init SDL_ttf si ce n'est pas déjà fait
     if (TTF_Init() == -1) {
         throw std::runtime_error("Failed to init SDL_ttf");
     }
 
-    // Charger la police
-    font = loadFontSafe({
-        "assets/fonts/Roboto-Black.ttf",
-        "/usr/share/fonts/TTF/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-    }, 24);
+    font = TTF_OpenFont("assets/fonts/Roboto-Black.ttf", 24);
+    if (!font) {
+        throw std::runtime_error("Failed to load font");
+    }
 
-    // Définir les boutons
-    int btnWidth = 300;
-    int btnHeight = 50;
-    int startY = 200;
-    int gap = 20;
-
-    buttons.push_back({ "Joueur vs Joueur", { 490, startY, btnWidth, btnHeight } });
-    buttons.push_back({ "IA / Analyse", { 490, startY + (btnHeight + gap), btnWidth, btnHeight } });
-    buttons.push_back({ "Quitter", { 490, startY + 2*(btnHeight + gap), btnWidth, btnHeight } });
+    // Création des boutons
+    buttons = {
+        {"Joueur vs Joueur", {100, 100, 300, 50}},
+        {"IA / Analyse",      {100, 200, 300, 50}},
+        {"Quitter",           {100, 300, 300, 50}}
+    };
 }
 
-void MenuWindow::handleEvent(const SDL_Event& e) {
-    if (e.type == SDL_MOUSEBUTTONDOWN) {
-        handleClick(e.button.x, e.button.y);
+MenuWindow::~MenuWindow() {
+    if (font) TTF_CloseFont(font);
+}
+
+void MenuWindow::handleEvent(const SDL_Event& event) {
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
+        handleClick(event.button.x, event.button.y);
+    }
+    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        windowManager->switchTo("menu"); // utile si on vient d'une autre fenêtre
     }
 }
 
 void MenuWindow::update() {
-    // Ici tu peux ajouter hover effect ou animation si besoin
+    // Rien pour l'instant
 }
 
 void MenuWindow::render(SDL_Renderer* renderer) {
-    // Fond
-    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+    SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
     SDL_RenderClear(renderer);
 
-    SDL_Color textColor = { 255, 255, 255, 255 };
-    SDL_Color btnColor = { 70, 70, 70, 255 };
+    drawButtons();
+}
 
+void MenuWindow::drawButtons() {
+    SDL_Color textColor = {255, 255, 255, 255};
     for (const auto& btn : buttons) {
-        // Dessiner le rectangle
-        SDL_SetRenderDrawColor(renderer, btnColor.r, btnColor.g, btnColor.b, btnColor.a);
+        SDL_SetRenderDrawColor(renderer, 70, 70, 70, 255);
         SDL_RenderFillRect(renderer, &btn.rect);
 
-        // Dessiner le texte
         SDL_Surface* textSurface = TTF_RenderText_Blended(font, btn.label.c_str(), textColor);
+        if (!textSurface) continue;
+
         SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-
-        int textW = 0, textH = 0;
-        SDL_QueryTexture(textTexture, nullptr, nullptr, &textW, &textH);
-        SDL_Rect textRect = { btn.rect.x + (btn.rect.w - textW)/2, btn.rect.y + (btn.rect.h - textH)/2, textW, textH };
-        SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
-
         SDL_FreeSurface(textSurface);
+        if (!textTexture) continue;
+
+        int texW = 0, texH = 0;
+        SDL_QueryTexture(textTexture, nullptr, nullptr, &texW, &texH);
+        SDL_Rect dstRect = {btn.rect.x + 10, btn.rect.y + (btn.rect.h - texH)/2, texW, texH};
+        SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
         SDL_DestroyTexture(textTexture);
     }
 }
 
 void MenuWindow::handleClick(int x, int y) {
-    cout << "Click at (" << x << ", " << y << ")\n";
-    for (const auto& btn : buttons) {
+    for (size_t i = 0; i < buttons.size(); ++i) {
+        const auto& btn = buttons[i];
         if (x >= btn.rect.x && x <= btn.rect.x + btn.rect.w &&
-            y >= btn.rect.y && y <= btn.rect.y + btn.rect.h) 
-        {
-            if (btn.label == "Quitter") {
-                // Fermer l'application
-                SDL_Event quitEvent;
-                quitEvent.type = SDL_QUIT;
-                SDL_PushEvent(&quitEvent);
-            } else if (btn.label == "Joueur vs Joueur") {
-                cout << "Switching to PlayerGame window" << endl;
-                manager->switchTo("PlayerGame");
-            } else if (btn.label == "IA / Analyse") {
-                manager->switchTo("AIgame");
+            y >= btn.rect.y && y <= btn.rect.y + btn.rect.h) {
+            switch (i) {
+                case 0: windowManager->switchTo("player_game"); break;
+                case 1: windowManager->switchTo("AIgame"); break;
+                case 2: SDL_Event quitEvent; quitEvent.type = SDL_QUIT; SDL_PushEvent(&quitEvent); break;
             }
         }
     }

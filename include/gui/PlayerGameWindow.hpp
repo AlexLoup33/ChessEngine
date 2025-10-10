@@ -18,22 +18,19 @@
 class PlayerGameWindow : public Window {
 public:
     PlayerGameWindow(WindowManager* manager, SDL_Renderer* renderer);
-    ~PlayerGameWindow() override = default;
+    ~PlayerGameWindow() override;
 
-    void drawChessBoard(SDL_Renderer* renderer);
     void handleEvent(const SDL_Event& event) override;
     void update() override;
     void render(SDL_Renderer* renderer) override;
-
-private:
-    bool whiteTurn;
-    std::string moveInfo;
-
+    
+    private:
     SDL_Renderer* renderer;
-    WindowManager* manager;
-
+    std::unique_ptr<Game> game;
     TTF_Font* font;
-    Game* game;    
+    std::string moveInfo;
+    
+    void drawChessBoard(SDL_Renderer* renderer);
 };
 
 #endif // __PLAYERGAMEWINDOW_HPP__

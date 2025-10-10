@@ -4,6 +4,7 @@ using namespace std;;
 
 Game::Game(){
     this->board = new Board();
+    this->board->initialize("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
     this->player_turn = Color::WHITE;
     this->turn = 1;
     this->half_move = 0;

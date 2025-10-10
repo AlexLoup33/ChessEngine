@@ -1,61 +1,65 @@
 #include "gui/Application.hpp"
-#include "gui/MenuWindow.hpp"
-#include "gui/PlayerGameWindow.hpp"
+#include "gui/WindowManager.hpp"
+#include <iostream>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <stdexcept>
-
-using namespace std;;
-
-Application::Application(const string& title, int width, int height){
-    SDL_Init(SDL_INIT_VIDEO);
-
-    if (TTF_Init() == -1){
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] > %s", TTF_GetError());
-    }
-
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
-    if (!window)
-        throw runtime_error("Failed to create SDL window");
+Application::Application(const std::string& title, int width, int height)
+    : window(nullptr), renderer(nullptr) {
     
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+        throw std::runtime_error(std::string("Failed to init SDL: ") + SDL_GetError());
+
+    if (TTF_Init() == -1)
+        throw std::runtime_error("Failed to init SDL_ttf");
+
+    window = SDL_CreateWindow(title.c_str(),
+                              SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED,
+                              width, height,
+                              SDL_WINDOW_SHOWN);
+
+    if (!window)
+        throw std::runtime_error("Failed to create window");
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer)
-        throw runtime_error("Failed to create SDL renderer");
+        throw std::runtime_error("Failed to create renderer");
 
-    manager.addWindow("menu", make_shared<MenuWindow>(&manager, renderer));
-    manager.addWindow("PlayerGame", make_shared<PlayerGameWindow>(&manager, renderer));
-    manager.addWindow("AIGame", shared_ptr<Window>(nullptr));
+    windowManager = std::make_unique<WindowManager>(renderer);
 
-    manager.switchTo("menu");
+    // ✅ Démarre directement sur le menu principal
+    windowManager->switchTo("menu");
 }
 
-Application::~Application(){
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+Application::~Application() {
+    windowManager.reset();
+    if (renderer) SDL_DestroyRenderer(renderer);
+    if (window) SDL_DestroyWindow(window);
     TTF_Quit();
     SDL_Quit();
 }
 
-void Application::run(){
-    running = true;
-    SDL_Event e; 
+void Application::run() {
+    bool running = true;
+    SDL_Event event;
 
-    while(running){
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
                 running = false;
-            }
-            if (auto current = manager.getCurrent()){
-                current->handleEvent(e);
-            }
+
+            if (windowManager->getCurrentWindow())
+                windowManager->getCurrentWindow()->handleEvent(event);
         }
 
-        if (auto current = manager.getCurrent()){
-            current->update();
-            current->render(renderer);
-        }
+        if (windowManager->getCurrentWindow())
+            windowManager->getCurrentWindow()->update();
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        windowManager->render();
+
         SDL_RenderPresent(renderer);
-        SDL_Delay(16);
+        SDL_Delay(16); // ~60 FPS
     }
 }

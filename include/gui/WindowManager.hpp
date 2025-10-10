@@ -3,27 +3,32 @@
 
 #pragma once
 
+#include <SDL2/SDL.h>
 #include <memory>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+
 #include "gui/Window.hpp"
 
 class WindowManager {
 public:
-    void addWindow(const std::string& name, std::shared_ptr<Window> window) {
-        windows[name] = window;
-    }
+    explicit WindowManager(SDL_Renderer* renderer);
+    ~WindowManager();
 
-    void switchTo(const std::string& name) {
-        if (windows.count(name))
-            current = windows[name];
-    }
+    void handleEvent(const SDL_Event& event);
+    void render();
+    void update();
 
-    std::shared_ptr<Window> getCurrent() const { return current; }
+    void switchTo(const std::string& windowName);
+    Window* getCurrentWindow();
 
 private:
-    std::unordered_map<std::string, std::shared_ptr<Window>> windows;
-    std::shared_ptr<Window> current;
+    SDL_Renderer* renderer;
+    std::unique_ptr<Window> currentWindow;
+    std::unordered_map<std::string, std::unique_ptr<Window>> cache;
+    std::string currentName;
+
+    std::unique_ptr<Window> createWindow(const std::string& name);
 };
 
 #endif // __WINDOWMANAGER_HPP__
