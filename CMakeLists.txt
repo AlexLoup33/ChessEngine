@@ -1,6 +1,7 @@
 # ----- CMake configuration ----- #
 cmake_minimum_required(VERSION 3.15)
 project(chess_engine LANGUAGES CXX)
+include (CTest)
 enable_testing()
 
 # ----- Set C++ standard ----- #
@@ -20,6 +21,8 @@ pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
 
 # ----- Include directories ----- #
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 include_directories(${SDL2_TTF_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 include_directories(${SDL2_MIXER_INCLUDE_DIRS})
@@ -66,5 +69,16 @@ add_custom_command(
 )
 
 # ----- Tests ----- #
+
+add_executable(test_board 
+    tests/test_board.cpp
+    lib/core/Board.cpp
+    lib/core/Piece.cpp
+    lib/core/Game.cpp
+    lib/utils/Utils.cpp)
+target_include_directories(test_board PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+add_test(test_new_board   ./test_board new_board)
+add_test(test_fen_export ./test_board fen_export)
 
 # ----- Installation ----- #
