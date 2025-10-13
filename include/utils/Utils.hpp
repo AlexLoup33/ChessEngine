@@ -1,6 +1,3 @@
-#include <SDL2/SDL_ttf.h>
-
-#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -22,14 +19,3 @@ std::vector<std::string> split(const std::string& text,const std::string& delimi
  * @return True or False, depend of the value of c
  */
 bool is_digit(int c);
-
-
-/**
- * @brief Loading properly a font
- * @param path: the path of the font file
- * @param size: the size of the vector path
- * @return TTF_Font* : pointer to a loaded TTF_Font element
- */
-TTF_Font* loadFontSafe(const std::vector<std::string>& paths, int size);
-
-//TODO: Add Json Parser and write

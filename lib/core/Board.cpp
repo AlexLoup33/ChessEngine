@@ -57,6 +57,53 @@ void Board::initialize(const string& fen){
     }
 }
 
+string Board::FENtoString(){
+    string FEN = "";
+    for (int file = 0; file < 8; file++){
+        int digit = 0;
+        for (int rank = 0; rank < 8; rank++){
+            int pos = file*8+rank;
+            if (squares[pos] != NULL){
+                if (digit != 0){
+                    FEN += to_string(digit);
+                    digit = 0;
+
+                    Piece* p = getPieceAt(pos);
+                    if (p == NULL){
+                        throw runtime_error("ERROR: INVALID PIECE");
+                    }
+                    const char* name = p->getName().c_str();
+                    string element;
+                    
+                    // SWITCH CASE A LA MANO
+                    if (name == "BlackRook") element = "r";
+                    else if (name == "BlackKnight") element = "n";
+                    else if (name == "BlackBishop") element = "b";
+                    else if (name == "BlackQueen") element = "q";
+                    else if (name == "BlackKing") element = "k";
+                    else if (name == "BlackPawn") element = "p";
+                    else if (name == "WhiteRook") element = "R";
+                    else if (name == "WhiteKnight") element = "N";
+                    else if (name == "WhiteBishop") element = "B";
+                    else if (name == "WhiteQueen") element = "Q";
+                    else if (name == "WhiteKing") element = "K";
+                    else if (name == "WhitePawn") element = "P";
+
+                    FEN += element;
+                }
+            }else{
+                digit++;
+                if (digit == 8){
+                    FEN += to_string(digit);
+                }
+            }
+        }
+        FEN += "/";
+    }
+    cout << FEN << endl; 
+    return FEN;
+}
+
 void Board::reset(){
     for (int pos = 0; pos < 64; pos++)
         this->squares[pos] = NULL;

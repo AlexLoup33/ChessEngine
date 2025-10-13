@@ -27,6 +27,13 @@ class Board{
         * @return void
         */
         void initialize(const std::string& fen);
+
+        /**
+         * @brief Take the current state of the board and convert it into a FEN string representation
+         * @param self: the board
+         * @return string : the FEN string
+         */
+        std::string FENtoString();
         
         /**
         * @brief Resets the board to the initial state when initialized.
