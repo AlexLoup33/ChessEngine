@@ -67,40 +67,52 @@ string Board::FENtoString(){
                 if (digit != 0){
                     FEN += to_string(digit);
                     digit = 0;
-
-                    Piece* p = getPieceAt(pos);
-                    if (p == NULL){
-                        throw runtime_error("ERROR: INVALID PIECE");
-                    }
-                    const char* name = p->getName().c_str();
-                    string element;
-                    
-                    // SWITCH CASE A LA MANO
-                    if (name == "BlackRook") element = "r";
-                    else if (name == "BlackKnight") element = "n";
-                    else if (name == "BlackBishop") element = "b";
-                    else if (name == "BlackQueen") element = "q";
-                    else if (name == "BlackKing") element = "k";
-                    else if (name == "BlackPawn") element = "p";
-                    else if (name == "WhiteRook") element = "R";
-                    else if (name == "WhiteKnight") element = "N";
-                    else if (name == "WhiteBishop") element = "B";
-                    else if (name == "WhiteQueen") element = "Q";
-                    else if (name == "WhiteKing") element = "K";
-                    else if (name == "WhitePawn") element = "P";
-
-                    FEN += element;
                 }
+                Piece* p = getPieceAt(pos);
+                if (p == NULL){
+                    throw runtime_error("ERROR: INVALID PIECE");
+                }
+                const char* name = p->getName().c_str();
+                string element = "el";
+                
+
+                // SWITCH CASE A LA MANO
+                if (strcmp(name, "BlackRook") == 0) 
+                    element = string("r");
+                else if (strcmp(name, "BlackKnight") == 0) 
+                    element = string("n");
+                else if (strcmp(name, "BlackBishop") == 0) 
+                    element = string("b");
+                else if (strcmp(name, "BlackQueen") == 0) 
+                    element = string("q");
+                else if (strcmp(name, "BlackKing") == 0) 
+                    element = string("k");
+                else if (strcmp(name, "BlackPawn") == 0) 
+                    element = string("p");
+                else if (strcmp(name, "WhiteRook") == 0) 
+                    element = string("R");
+                else if (strcmp(name, "WhiteKnight") == 0) 
+                    element = string("N");
+                else if (strcmp(name, "WhiteBishop") == 0) 
+                    element = string("B");
+                else if (strcmp(name, "WhiteQueen") == 0) 
+                    element = string("Q");
+                else if (strcmp(name, "WhiteKing") == 0) 
+                    element = string("K");
+                else if (strcmp(name, "WhitePawn") == 0) 
+                    element = string("P");
+
+
+                FEN += element;
             }else{
                 digit++;
-                if (digit == 8){
+                if (digit == 8 || rank == 7){
                     FEN += to_string(digit);
                 }
             }
         }
-        FEN += "/";
+        FEN += (file != 7) ? "/" : "";
     }
-    cout << FEN << endl; 
     return FEN;
 }
 
