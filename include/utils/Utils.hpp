@@ -19,3 +19,10 @@ std::vector<std::string> split(const std::string& text,const std::string& delimi
  * @return True or False, depend of the value of c
  */
 bool is_digit(int c);
+
+/**
+ * @brief Return the int pos from string chess position 
+ * @param case : the string of the case
+ * @return int : the pos between 0 and 63
+*/
+int StringPositionToInt(const char* c);
