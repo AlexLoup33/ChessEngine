@@ -78,7 +78,22 @@ add_executable(test_board
     lib/utils/Utils.cpp)
 target_include_directories(test_board PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-add_test(test_new_board   ./test_board new_board)
-add_test(test_fen_export ./test_board fen_export)
+add_executable(test_piece
+    tests/test_piece.cpp
+    lib/core/Piece.cpp
+    include/core/Color.hpp)   
+target_include_directories(test_piece PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
+add_executable(test_utils
+    tests/test_utils.cpp
+    lib/utils/Utils.cpp)
+target_include_directories(test_utils PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+add_test(test_new_board     ./test_board new_board)
+add_test(test_fen_export    ./test_board fen_export)
+add_test(test_fen_import    ./test_board fen_import)
+
+add_test(test_new_piece ./test_piece new_piece)
+
+add_test(test_split ./test_utils split)
 # ----- Installation ----- #

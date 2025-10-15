@@ -26,3 +26,10 @@ bool is_digit(int c);
  * @return int : the pos between 0 and 63
 */
 int StringPositionToInt(const char* c);
+
+/**
+ * @brief Dislay the value of a vector as an list
+ * @param v : Vector to display
+ * @return void
+*/
+void displayStringVector(std::vector<std::string> v);

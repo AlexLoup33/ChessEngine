@@ -35,3 +35,10 @@ int StringPositionToInt(const char* c){
         throw runtime_error("Error: StringPositionToInt: pos is out of range (0-63)");
     return pos;
 }
+
+void displayStringVector(std::vector<std::string> v){
+    cout << "[ ";
+    for (auto i : v)
+        cout << i << ", ";
+    cout << "]";
+}

@@ -4,7 +4,10 @@ using namespace std;
 
 Piece::Piece(const string& name, int pos, const Color color, vector<int> move_dir, bool multi_move, bool can_castle, bool en_passant)
     : name(name), color(color), movement(move_dir), move_opt{multi_move}{
+        if (pos < 0 || pos > 63)
+            throw runtime_error("Invalid pos on Piece initialization");
         this->pos = pos;
+
         this->move_opt.can_castle = can_castle;
         this->move_opt.en_passant = en_passant;
 }
