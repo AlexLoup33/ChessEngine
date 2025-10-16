@@ -96,4 +96,6 @@ add_test(test_fen_import    ./test_board fen_import)
 add_test(test_new_piece ./test_piece new_piece)
 
 add_test(test_split ./test_utils split)
+add_test(test_is_digit ./test_utils is_digit)
+add_test(test_string_position_to_int ./test_utils string_position_to_int)
 # ----- Installation ----- #

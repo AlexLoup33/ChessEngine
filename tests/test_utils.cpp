@@ -44,6 +44,37 @@ bool test_split(){
     return true;
 }
 
+bool test_is_digit(){
+    for (int i = 0; i < 10; i++){
+        if (!is_digit(i+'0')){
+            printf("Problem with digit %c\n", i);
+            return false;
+        }
+    }
+    if (is_digit('T') || is_digit('E') || is_digit('S') || is_digit('T')){
+        printf("Problem on false digit\n");
+        return false;
+    }
+    return true;
+}
+
+bool test_string_position_to_int(){
+    struct { const char* s; int expected; } tests[] = {
+        {"A1", 56}, {"H1", 63}, {"A8", 0}, {"H8", 7},
+        {"C5", 26}, {"F5", 29}
+    };
+
+    for (auto& t : tests){
+        int got = StringPositionToInt(t.s);
+        if (got != t.expected){
+            fprintf(stderr, "Error: %s -> got %d, expected %d\n", t.s, got, t.expected);
+            return false;
+        }
+    }
+    return true;
+}
+
+
 int main(int argc, char* argv[]){
     if (argc == 1){
         usage(argv);
@@ -53,7 +84,11 @@ int main(int argc, char* argv[]){
     bool pass = false;
 
     if (strcmp(argv[1], "split") == 0)
-        test_split();
+        pass = test_split();
+    else if(strcmp(argv[1], "is_digit") == 0)
+        pass = test_is_digit();
+    else if (strcmp(argv[1], "string_position_to_int") == 0)
+        pass = test_string_position_to_int();
     else{
         fprintf(stderr, "Error: test \"%s\" not found !\n", argv[1]);
         exit(EXIT_FAILURE);

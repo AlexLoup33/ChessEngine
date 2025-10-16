@@ -18,23 +18,17 @@ bool is_digit(int c){
 }
 
 int StringPositionToInt(const char* c){
-    // Converting the letter into file
-    int file = (int)c[0];
-    if (file < 65 || file > 72) // A to H
-        throw runtime_error("Error: StringPositionToInt: file is out of range (A-H)");
-    file -= 65;
-    
-    // Converting the digit into rank
-    int rank = (int)c[1];
-    if (rank < 49 || rank > 56) // 1 to 8
-        throw runtime_error("Error: StringPositionToInt: rank is out of range (1-8)");
-    rank -= 49;
+    int file = c[0] - 'A';         // A=0, B=1, ..., H=7
+    if (file < 0 || file > 7)
+        throw runtime_error("StringPositionToInt: file out of range (A-H)");
 
-    int pos = file*8+rank;
-    if (pos < 0 || pos > 63)
-        throw runtime_error("Error: StringPositionToInt: pos is out of range (0-63)");
-    return pos;
+    int rank = c[1] - '1';         // 1=0, 2=1, ..., 8=7
+    if (rank < 0 || rank > 7)
+        throw runtime_error("StringPositionToInt: rank out of range (1-8)");
+
+    return (7 - rank) * 8 + file;  // inverser la rangée pour que A8=0
 }
+
 
 void displayStringVector(std::vector<std::string> v){
     cout << "[ ";
