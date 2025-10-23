@@ -132,13 +132,16 @@ Piece *Board::getPieceAt(int pos){
 }
 
 void Board::MovePiece(int start, int end){
+    // Basic validation for positions
     if (start < 0 || start >= 64 || end < 0 || end >= 64) return;
 
+    // Check if there is a piece at the start position
     Piece* piece = getPieceAt(start);
     if (piece == nullptr) return;
 
-    // 
+    // Checking movement validity
 
+    // Applying the move
     piece->updatePosition(end);
     squares[start] = NULL;
     squares[end] = piece;
