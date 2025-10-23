@@ -7,7 +7,7 @@
 
 #include "cstddef"
 
-#include "Piece.hpp"
+#include "core/Piece.hpp"
 #include "utils/Utils.hpp"
 
 class Board{
@@ -47,6 +47,14 @@ class Board{
          * @return Piece* : the value in the board at the position pos
          */
         Piece* getPieceAt(int pos);
+
+        /**
+         * @brief Change the position of a piece in the board
+         * @param piece : the pointer of the piece
+         * @param destination : the new Position of the Piece
+         * @return void
+         */
+        void MovePiece(int start, int end);
 
     private:
         Piece **squares; // Array of Pieces

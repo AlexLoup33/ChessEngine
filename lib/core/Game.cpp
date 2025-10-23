@@ -23,7 +23,22 @@ void Game::newGame(){
     this->castle = {1, 1, 1, 1};
 }
 
-Board *Game::GetBoard()
-{
+Board *Game::GetBoard(){
     return this->board;
+}
+
+void Game::SwitchPlayerTurn(){
+    this->player_turn = (this->player_turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+}
+
+Color Game::getPlayerTurn(){
+    return this->player_turn;
+}
+
+void Game::PlayMove(Piece* piece, int position){
+    int init_pos = piece->getPosition();
+
+    board->MovePiece(init_pos, position);
+
+    SwitchPlayerTurn();
 }

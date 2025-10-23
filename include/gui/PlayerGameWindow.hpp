@@ -29,6 +29,7 @@ public:
     std::unique_ptr<Game> game;
     TTF_Font* font;
     std::string moveInfo;
+    Piece* holdedPiece = NULL;
     
     void drawChessBoard(SDL_Renderer* renderer);
 };

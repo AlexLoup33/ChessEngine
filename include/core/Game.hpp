@@ -16,7 +16,14 @@ class Game{
         ~Game();
 
         void newGame();
+        
         Board* GetBoard();
+
+        void SwitchPlayerTurn();
+
+        Color getPlayerTurn();
+
+        void PlayMove(Piece* piece, int destination);
 
     private:
         Board *board;
@@ -24,6 +31,8 @@ class Game{
         int turn;
         int half_move;
         std::vector<int> castle;
+
+        bool isLegalMove(Piece* piece, int destination);
 };
 
 #endif // __GAME_HPP__

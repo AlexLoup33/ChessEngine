@@ -130,3 +130,16 @@ Piece *Board::getPieceAt(int pos){
     if (pos < 0 || pos >= 64) return nullptr;
     return squares[pos];
 }
+
+void Board::MovePiece(int start, int end){
+    if (start < 0 || start >= 64 || end < 0 || end >= 64) return;
+
+    Piece* piece = getPieceAt(start);
+    if (piece == nullptr) return;
+
+    // 
+
+    piece->updatePosition(end);
+    squares[start] = NULL;
+    squares[end] = piece;
+}
