@@ -5,6 +5,8 @@
 #include <iostream>
 #include <filesystem>
 
+using namespace std;;
+
 PlayerGameWindow::PlayerGameWindow(WindowManager* manager_, SDL_Renderer* renderer_)
     : Window(manager_), renderer(renderer_), font(nullptr), moveInfo("")
 {
@@ -27,6 +29,7 @@ PlayerGameWindow::~PlayerGameWindow() {
 
 void PlayerGameWindow::handleEvent(const SDL_Event& event) {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        cout << game->GetBoard()->FENtoString() << endl;
         windowManager->switchTo("menu");
     }
 
